@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratorio de seguridad digital</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: #f0f4f8;
+      color: #172033;
+      font-family: Arial, sans-serif;
+    }
+    main {
+      width: 100%;
+      max-width: 430px;
+      padding: 30px;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 8px 30px #17203318;
+    }
+    .tag {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 20px;
+      background: #e0f2fe;
+      color: #075985;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    h1 { font-size: 26px; margin-bottom: 8px; }
+    p { line-height: 1.5; color: #526078; }
+    label { display: block; margin-top: 18px; font-weight: bold; }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 7px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 13px;
+      border: 0;
+      border-radius: 8px;
+      background: #155eef;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #resultado {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      background: #ecfdf5;
+      color: #065f46;
+      line-height: 1.5;
+    }
+    footer { margin-top: 22px; font-size: 12px; color: #64748b; }
+  </style>
+</head>
+<body>
+  <main>
+    <span class="tag">SIMULACIÓN EDUCATIVA</span>
+    <h1>Laboratorio de seguridad digital</h1>
+    <p>Practica cómo identificar formularios sospechosos y proteger tus cuentas.</p>
+
+    <form id="simulacion">
+      <label for="usuario">Usuario de prueba</label>
+      <input id="usuario" name="usuario" autocomplete="off"
+             placeholder="Ejemplo: estudiante_demo" required>
+
+      <label for="clave">Contraseña ficticia</label>
+      <input id="clave" type="password" autocomplete="off"
+             placeholder="No escribas una contraseña real" required>
+
+      <button type="submit">Realizar prueba</button>
+    </form>
+
+    <section id="resultado" role="status">
+      <strong>¡Simulación completada!</strong>
+      <p>En una página sospechosa, no introduzcas tus credenciales. Comprueba el dominio y accede a tus cuentas desde la web oficial.</p>
+    </section>
+
+    <footer>Entorno de aprendizaje. No se envían ni almacenan los datos introducidos.</footer>
+  </main>
+
+  <script>
+    document.getElementById("simulacion").addEventListener("submit", function(event) {
+      event.preventDefault();
+      document.getElementById("usuario").value = "";
+      document.getElementById("clave").value = "";
+      document.getElementById("resultado").style.display = "block";
+    });
+  </script>
+</body>
+</html>
