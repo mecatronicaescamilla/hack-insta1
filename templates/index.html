@@ -4,226 +4,411 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Simulación de inicio de sesión</title>
+  <title>Social Lab — Simulación educativa</title>
   <style>
     * { box-sizing: border-box; }
+
+    :root {
+      color-scheme: dark;
+      --background: #101113;
+      --panel: #202022;
+      --border: #414145;
+      --blue: #0866ff;
+      --muted: #b9b9c0;
+    }
 
     body {
       margin: 0;
       min-height: 100vh;
-      background: #fafafa;
-      color: #262626;
+      background: var(--background);
+      color: #f5f5f7;
       font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 56% 44%;
+      min-height: 100vh;
+    }
+
+    .showcase {
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 24px 16px;
+      padding: 70px 6%;
+      border-right: 2px solid #444448;
+      overflow: hidden;
+    }
+
+    .brand {
+      position: absolute;
+      top: 34px;
+      left: 36px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: bold;
+      font-size: 19px;
+    }
+
+    .brand-icon {
+      width: 43px;
+      height: 43px;
+      border: 4px solid transparent;
+      border-radius: 13px;
+      background:
+        linear-gradient(var(--background), var(--background)) padding-box,
+        linear-gradient(135deg, #8338ec, #f72585, #ffb703) border-box;
+      position: relative;
+    }
+
+    .brand-icon::before {
+      content: "";
+      position: absolute;
+      width: 17px;
+      height: 17px;
+      border: 3px solid #f72585;
+      border-radius: 50%;
+      top: 7px;
+      left: 7px;
+    }
+
+    .brand-icon::after {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #ffb703;
+      top: 5px;
+      right: 5px;
+    }
+
+    .headline {
+      max-width: 780px;
+      margin: 35px auto 0;
+      text-align: center;
+      font-size: clamp(30px, 3.1vw, 47px);
+      line-height: 1.35;
+      font-weight: 400;
+      letter-spacing: -1.3px;
+    }
+
+    .gradient {
+      background: linear-gradient(90deg, #ff7557, #ff1689, #bc55ff);
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+      font-weight: 600;
+    }
+
+    .art {
+      position: relative;
+      width: min(360px, 85%);
+      height: 300px;
+      margin-top: 28px;
+    }
+
+    .post {
+      position: absolute;
+      width: 145px;
+      height: 225px;
+      border: 1px solid #696971;
+      border-radius: 23px;
+      padding: 9px;
+      background: linear-gradient(155deg, #39455d, #171a22 70%);
+      box-shadow: 0 16px 45px #0008;
+    }
+
+    .post.one {
+      left: 12px;
+      top: 43px;
+      transform: rotate(-12deg);
+      background: linear-gradient(160deg, #e0a26b, #694a7c 55%, #262838);
+    }
+
+    .post.two {
+      right: 10px;
+      top: 42px;
+      transform: rotate(12deg);
+      background: linear-gradient(155deg, #9d7bce, #d7a6a2 48%, #34435b);
+    }
+
+    .post.main {
+      width: 165px;
+      height: 245px;
+      left: calc(50% - 82px);
+      top: 10px;
+      z-index: 2;
+      background: linear-gradient(155deg, #b2c5d2, #786b81 48%, #343d55);
+    }
+
+    .post-top {
+      height: 20px;
+      border-bottom: 1px solid #ffffff55;
+      margin-bottom: 10px;
+    }
+
+    .avatar {
+      width: 23px;
+      height: 23px;
+      display: inline-block;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffb703, #f72585, #8338ec);
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+    .scene {
+      height: 155px;
+      border-radius: 14px;
+      background:
+        radial-gradient(ellipse at 50% 35%, #f4d1ae 0 12%, transparent 13%),
+        radial-gradient(ellipse at 50% 73%, #354a61 0 28%, transparent 29%),
+        linear-gradient(145deg, #d7a69a, #6e7f91 55%, #363548);
+    }
+
+    .main .scene {
+      height: 170px;
+      background:
+        radial-gradient(ellipse at 50% 34%, #eac3a0 0 12%, transparent 13%),
+        radial-gradient(ellipse at 50% 75%, #35445d 0 30%, transparent 31%),
+        linear-gradient(145deg, #e7c5ad, #9b8990 52%, #4a5267);
+    }
+
+    .post-bottom {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 17px;
+    }
+
+    .bubble {
+      position: absolute;
+      z-index: 3;
+      border-radius: 20px;
+      padding: 9px 13px;
+      background: #f5f5f7;
+      color: #292934;
+      box-shadow: 0 8px 20px #0005;
+      font-size: 18px;
+    }
+
+    .bubble.like { left: 0; top: 155px; }
+    .bubble.star { right: 0; top: 145px; background: #18ca75; color: white; }
+
+    .login-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 48px clamp(24px, 4vw, 64px);
+      background: var(--panel);
     }
 
     .login-card {
       width: 100%;
-      max-width: 350px;
-      background: #fff;
-      border: 1px solid #dbdbdb;
-      padding: 28px 38px 24px;
-      text-align: center;
+      max-width: 420px;
     }
 
-    .wordmark {
-      font-family: "Brush Script MT", cursive;
-      font-size: 40px;
-      font-weight: bold;
-      margin: 5px 0 25px;
-      letter-spacing: -1px;
+    .login-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0 0 25px;
     }
 
     .notice {
+      border: 1px solid #42434a;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      color: #c7d9ff;
+      background: #252a35;
       font-size: 12px;
       line-height: 1.5;
-      background: #f0f7ff;
-      border: 1px solid #cfe5ff;
-      color: #174a7e;
-      padding: 9px;
-      margin-bottom: 16px;
-      border-radius: 4px;
     }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    input {
+    .field {
+      display: block;
       width: 100%;
-      height: 38px;
-      border: 1px solid #dbdbdb;
-      border-radius: 3px;
-      background: #fafafa;
-      padding: 9px 8px;
-      font-size: 12px;
+      height: 58px;
+      padding: 0 18px;
+      margin-bottom: 12px;
+      border: 1px solid #48484e;
+      border-radius: 17px;
+      background: #202022;
+      color: white;
+      font-size: 15px;
       outline: none;
     }
 
-    input:focus {
-      border-color: #a8a8a8;
+    .field:focus {
+      border-color: #8d8d96;
     }
 
-    button {
-      margin-top: 9px;
-      height: 33px;
-      border: none;
-      border-radius: 8px;
-      background: #4cb5f9;
+    .field::placeholder {
+      color: #b7b7bf;
+    }
+
+    .primary {
+      width: 100%;
+      height: 52px;
+      border: 0;
+      border-radius: 28px;
+      margin-top: 15px;
+      background: #1559a2;
       color: #fff;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: bold;
       cursor: pointer;
     }
 
-    button:hover {
-      background: #2799e8;
-    }
+    .primary:hover { background: #1d70cb; }
 
-    .separator {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin: 22px 0;
-      color: #737373;
-      font-size: 12px;
-      font-weight: bold;
-    }
-
-    .separator::before,
-    .separator::after {
-      content: "";
-      height: 1px;
-      flex: 1;
-      background: #dbdbdb;
-    }
-
-    .help {
-      font-size: 12px;
-      color: #00376b;
-      margin: 15px 0 0;
-    }
-
-    .bottom-card {
-      width: 100%;
-      max-width: 350px;
-      margin-top: 10px;
-      padding: 20px;
-      background: #fff;
-      border: 1px solid #dbdbdb;
+    .forgot {
       text-align: center;
+      margin: 28px 0 65px;
+      color: #ededf1;
       font-size: 14px;
     }
 
-    .bottom-card a {
-      color: #0095f6;
-      font-weight: bold;
-      text-decoration: none;
+    .secondary {
+      display: block;
+      width: 100%;
+      min-height: 49px;
+      margin-top: 12px;
+      border: 1px solid #45454b;
+      border-radius: 27px;
+      background: #29292c;
+      color: #e5e5eb;
+      font-size: 15px;
+      text-align: center;
+      padding: 14px;
     }
 
-    footer {
-      max-width: 350px;
-      margin-top: 18px;
+    .secondary.outline {
+      background: transparent;
+      border-color: #168aff;
+      color: #54a8ff;
+    }
+
+    .meta {
+      margin-top: 29px;
+      font-size: 18px;
       text-align: center;
-      color: #737373;
-      font-size: 11px;
-      line-height: 1.6;
+      color: #dddde2;
+      letter-spacing: -0.5px;
     }
 
     #result {
       display: none;
+      padding: 14px;
       margin-top: 18px;
-      padding: 12px;
-      border-radius: 5px;
-      background: #e8f7ed;
-      color: #17663a;
-      font-size: 13px;
+      border: 1px solid #267e54;
+      border-radius: 10px;
+      background: #142b20;
+      color: #d1f9df;
       line-height: 1.5;
+      font-size: 14px;
     }
 
-    @media (max-width: 420px) {
-      body { padding: 0; background: #fff; }
-      .login-card {
-        border: none;
-        padding: 35px 28px 24px;
+    @media (max-width: 760px) {
+      .layout { grid-template-columns: 1fr; }
+      .showcase {
+        min-height: 360px;
+        padding: 65px 20px 15px;
+        border-right: 0;
+        border-bottom: 1px solid #444448;
       }
-      .bottom-card { border: none; }
+      .brand { top: 18px; left: 20px; }
+      .brand span { display: none; }
+      .headline { font-size: 29px; margin-top: 12px; }
+      .art { transform: scale(.72); transform-origin: top center; margin-bottom: -65px; }
+      .login-area { padding: 36px 24px; }
+      .forgot { margin-bottom: 32px; }
     }
   </style>
 </head>
 <body>
-  <main class="login-card">
-    <div class="wordmark">Social</div>
+  <main class="layout">
+    <section class="showcase">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true"></div>
+        <span>Social Lab</span>
+      </div>
 
-    <div class="notice">
-      SIMULACIÓN EDUCATIVA<br>
-      Usa únicamente datos ficticios. No es un servicio oficial.
-    </div>
+      <h1 class="headline">
+        Comparte los momentos<br>
+        <span class="gradient">que importan.</span>
+      </h1>
 
-    <form id="demo-form">
-      <input
-        id="demo-user"
-        type="text"
-        placeholder="Nombre de usuario de prueba"
-        aria-label="Nombre de usuario de prueba"
-        autocomplete="off"
-        required
-      >
+      <div class="art" aria-hidden="true">
+        <div class="post one">
+          <div class="post-top"><span class="avatar"></span>•••</div>
+          <div class="scene"></div>
+          <div class="post-bottom"><span>♡</span><span>↗</span></div>
+        </div>
+        <div class="post two">
+          <div class="post-top"><span class="avatar"></span>•••</div>
+          <div class="scene"></div>
+          <div class="post-bottom"><span>♡</span><span>↗</span></div>
+        </div>
+        <div class="post main">
+          <div class="post-top"><span class="avatar"></span>•••</div>
+          <div class="scene"></div>
+          <div class="post-bottom"><span>♡　♡</span><span>♧</span></div>
+        </div>
+        <div class="bubble like">♥</div>
+        <div class="bubble star">✦ ★</div>
+      </div>
+    </section>
 
-      <input
-        id="demo-pass"
-        type="password"
-        placeholder="Contraseña ficticia"
-        aria-label="Contraseña ficticia"
-        autocomplete="off"
-        required
-      >
+    <section class="login-area">
+      <div class="login-card">
+        <h2 class="login-title">Acceso de demostración</h2>
 
-      <button type="submit">Iniciar sesión de prueba</button>
-    </form>
+        <div class="notice">
+          LABORATORIO EDUCATIVO · No es un servicio oficial.
+          Usa exclusivamente datos ficticios.
+        </div>
 
-    <div class="separator">O</div>
+        <form id="demo-form">
+          <input class="field" id="demo-user"
+            type="text" placeholder="Usuario de prueba"
+            aria-label="Usuario de prueba" autocomplete="off" required>
 
-    <p class="help">¿Cómo reconocer una página sospechosa?</p>
+          <input class="field" id="demo-pass"
+            type="password" placeholder="Contraseña ficticia"
+            aria-label="Contraseña ficticia" autocomplete="off" required>
 
-    <div id="result" role="status">
-      Prueba completada. Antes de iniciar sesión en cualquier sitio,
-      comprueba el dominio y no compartas tus credenciales en páginas dudosas.
-    </div>
+          <button class="primary" type="submit">Probar simulación</button>
+        </form>
+
+        <p class="forgot">Aprende a reconocer páginas sospechosas</p>
+
+        <div class="secondary">Información sobre seguridad digital</div>
+        <div class="secondary outline">Continuar con la práctica</div>
+
+        <div id="result" role="status">
+          Simulación completada. Los campos se han limpiado y sus valores
+          no se han enviado ni almacenado.
+        </div>
+
+        <div class="meta">Social Lab</div>
+      </div>
+    </section>
   </main>
 
-  <section class="bottom-card">
-    Laboratorio de seguridad digital
-    <br><br>
-    <a href="#aprendizaje" id="learn">Aprender sobre phishing</a>
-  </section>
-
-  <footer id="aprendizaje">
-    Entorno académico de demostración. Los campos se procesan
-    únicamente en tu navegador y se limpian al terminar la prueba.
-  </footer>
-
   <script>
-    document.getElementById("demo-form").addEventListener("submit", function(e) {
-      e.preventDefault();
+    document.getElementById("demo-form").addEventListener("submit", function(event) {
+      event.preventDefault();
 
-      // No se envían ni guardan los valores introducidos.
+      // Los valores no se transmiten ni se guardan.
       document.getElementById("demo-user").value = "";
       document.getElementById("demo-pass").value = "";
       document.getElementById("result").style.display = "block";
-    });
-
-    document.getElementById("learn").addEventListener("click", function(e) {
-      e.preventDefault();
-      document.getElementById("aprendizaje").scrollIntoView({
-        behavior: "smooth"
-      });
     });
   </script>
 </body>
