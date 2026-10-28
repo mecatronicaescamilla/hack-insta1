@@ -401,15 +401,58 @@
     </section>
   </main>
 
-  <script>
-    document.getElementById("demo-form").addEventListener("submit", function(event) {
-      event.preventDefault();
-
-      // Los valores no se transmiten ni se guardan.
-      document.getElementById("demo-user").value = "";
-      document.getElementById("demo-pass").value = "";
-      document.getElementById("result").style.display = "block";
+ 
+<script>
+    const form = document.getElementById("demo-form");
+    const usuario = document.getElementById("demo-user");
+    const clave = document.getElementById("demo-pass");
+    const resultado = document.getElementById("result");
+  
+    async function registrar(usuarioDemo, evento) {
+      const respuesta = await fetch("/event", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          usuario: usuarioDemo,
+          evento: evento
+        })
+      });
+  
+      if (!respuesta.ok) {
+        throw new Error("No se pudo guardar el evento");
+      }
+    }
+  
+    form.addEventListener("submit", async function(e) {
+      e.preventDefault();
+  
+      // Solo se admite un identificador ficticio.
+      const idDemo = usuario.value.trim();
+  
+      if (!/^demo_[a-zA-Z0-9_-]{1,30}$/.test(idDemo)) {
+        resultado.textContent =
+          "Usa un identificador ficticio, por ejemplo demo_estudiante.";
+        resultado.style.display = "block";
+        return;
+      }
+  
+      try {
+        await registrar(idDemo, "prueba_completada");
+  
+        // La contraseña nunca se envía al servidor.
+        clave.value = "";
+        usuario.value = "";
+  
+        resultado.textContent =
+          "Prueba completada y evento guardado correctamente.";
+        resultado.style.display = "block";
+      } catch (error) {
+        resultado.textContent =
+          "No se pudo guardar el evento. Inténtalo de nuevo.";
+        resultado.style.display = "block";
+      }
     });
   </script>
+  
 </body>
 </html>
