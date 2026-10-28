@@ -3,103 +3,227 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Laboratorio de seguridad digital</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulación de inicio de sesión</title>
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 20px;
-      background: #f0f4f8;
-      color: #172033;
-      font-family: Arial, sans-serif;
+      background: #fafafa;
+      color: #262626;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
     }
-    main {
+
+    .login-card {
       width: 100%;
-      max-width: 430px;
-      padding: 30px;
-      border-radius: 16px;
-      background: white;
-      box-shadow: 0 8px 30px #17203318;
+      max-width: 350px;
+      background: #fff;
+      border: 1px solid #dbdbdb;
+      padding: 28px 38px 24px;
+      text-align: center;
     }
-    .tag {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 20px;
-      background: #e0f2fe;
-      color: #075985;
+
+    .wordmark {
+      font-family: "Brush Script MT", cursive;
+      font-size: 40px;
+      font-weight: bold;
+      margin: 5px 0 25px;
+      letter-spacing: -1px;
+    }
+
+    .notice {
+      font-size: 12px;
+      line-height: 1.5;
+      background: #f0f7ff;
+      border: 1px solid #cfe5ff;
+      color: #174a7e;
+      padding: 9px;
+      margin-bottom: 16px;
+      border-radius: 4px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    input {
+      width: 100%;
+      height: 38px;
+      border: 1px solid #dbdbdb;
+      border-radius: 3px;
+      background: #fafafa;
+      padding: 9px 8px;
+      font-size: 12px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #a8a8a8;
+    }
+
+    button {
+      margin-top: 9px;
+      height: 33px;
+      border: none;
+      border-radius: 8px;
+      background: #4cb5f9;
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2799e8;
+    }
+
+    .separator {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 22px 0;
+      color: #737373;
       font-size: 12px;
       font-weight: bold;
     }
-    h1 { font-size: 26px; margin-bottom: 8px; }
-    p { line-height: 1.5; color: #526078; }
-    label { display: block; margin-top: 18px; font-weight: bold; }
-    input {
-      width: 100%;
-      padding: 12px;
-      margin-top: 7px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 16px;
+
+    .separator::before,
+    .separator::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: #dbdbdb;
     }
-    button {
-      width: 100%;
-      margin-top: 22px;
-      padding: 13px;
-      border: 0;
-      border-radius: 8px;
-      background: #155eef;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
+
+    .help {
+      font-size: 12px;
+      color: #00376b;
+      margin: 15px 0 0;
     }
-    #resultado {
+
+    .bottom-card {
+      width: 100%;
+      max-width: 350px;
+      margin-top: 10px;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #dbdbdb;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .bottom-card a {
+      color: #0095f6;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    footer {
+      max-width: 350px;
+      margin-top: 18px;
+      text-align: center;
+      color: #737373;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    #result {
       display: none;
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 8px;
-      background: #ecfdf5;
-      color: #065f46;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 5px;
+      background: #e8f7ed;
+      color: #17663a;
+      font-size: 13px;
       line-height: 1.5;
     }
-    footer { margin-top: 22px; font-size: 12px; color: #64748b; }
+
+    @media (max-width: 420px) {
+      body { padding: 0; background: #fff; }
+      .login-card {
+        border: none;
+        padding: 35px 28px 24px;
+      }
+      .bottom-card { border: none; }
+    }
   </style>
 </head>
 <body>
-  <main>
-    <span class="tag">SIMULACIÓN EDUCATIVA</span>
-    <h1>Laboratorio de seguridad digital</h1>
-    <p>Practica cómo identificar formularios sospechosos y proteger tus cuentas.</p>
+  <main class="login-card">
+    <div class="wordmark">Social</div>
 
-    <form id="simulacion">
-      <label for="usuario">Usuario de prueba</label>
-      <input id="usuario" name="usuario" autocomplete="off"
-             placeholder="Ejemplo: estudiante_demo" required>
+    <div class="notice">
+      SIMULACIÓN EDUCATIVA<br>
+      Usa únicamente datos ficticios. No es un servicio oficial.
+    </div>
 
-      <label for="clave">Contraseña ficticia</label>
-      <input id="clave" type="password" autocomplete="off"
-             placeholder="No escribas una contraseña real" required>
+    <form id="demo-form">
+      <input
+        id="demo-user"
+        type="text"
+        placeholder="Nombre de usuario de prueba"
+        aria-label="Nombre de usuario de prueba"
+        autocomplete="off"
+        required
+      >
 
-      <button type="submit">Realizar prueba</button>
+      <input
+        id="demo-pass"
+        type="password"
+        placeholder="Contraseña ficticia"
+        aria-label="Contraseña ficticia"
+        autocomplete="off"
+        required
+      >
+
+      <button type="submit">Iniciar sesión de prueba</button>
     </form>
 
-    <section id="resultado" role="status">
-      <strong>¡Simulación completada!</strong>
-      <p>En una página sospechosa, no introduzcas tus credenciales. Comprueba el dominio y accede a tus cuentas desde la web oficial.</p>
-    </section>
+    <div class="separator">O</div>
 
-    <footer>Entorno de aprendizaje. No se envían ni almacenan los datos introducidos.</footer>
+    <p class="help">¿Cómo reconocer una página sospechosa?</p>
+
+    <div id="result" role="status">
+      Prueba completada. Antes de iniciar sesión en cualquier sitio,
+      comprueba el dominio y no compartas tus credenciales en páginas dudosas.
+    </div>
   </main>
 
+  <section class="bottom-card">
+    Laboratorio de seguridad digital
+    <br><br>
+    <a href="#aprendizaje" id="learn">Aprender sobre phishing</a>
+  </section>
+
+  <footer id="aprendizaje">
+    Entorno académico de demostración. Los campos se procesan
+    únicamente en tu navegador y se limpian al terminar la prueba.
+  </footer>
+
   <script>
-    document.getElementById("simulacion").addEventListener("submit", function(event) {
-      event.preventDefault();
-      document.getElementById("usuario").value = "";
-      document.getElementById("clave").value = "";
-      document.getElementById("resultado").style.display = "block";
+    document.getElementById("demo-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      // No se envían ni guardan los valores introducidos.
+      document.getElementById("demo-user").value = "";
+      document.getElementById("demo-pass").value = "";
+      document.getElementById("result").style.display = "block";
+    });
+
+    document.getElementById("learn").addEventListener("click", function(e) {
+      e.preventDefault();
+      document.getElementById("aprendizaje").scrollIntoView({
+        behavior: "smooth"
+      });
     });
   </script>
 </body>
